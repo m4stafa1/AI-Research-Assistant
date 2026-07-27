@@ -1,5 +1,5 @@
 # AI-Research-Assistant
-![Application](Screenshot _TRial_1.jpg) 
+ 
 
 AI Research Assistant using RAG, LangGraph, ChromaDB, and Gemini/OpenRouter for answering questions from AI research papers.
 
