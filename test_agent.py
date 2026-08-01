@@ -1,3 +1,5 @@
+from turtle import st
+
 from src.agent import agent
 
 response = agent.invoke(
@@ -11,4 +13,8 @@ response = agent.invoke(
     }
 )
 
-print(response["messages"][-1].content)
+st.write(type(response))
+st.write(response.keys())
+
+for i, msg in enumerate(response["messages"]):
+    st.write(i, type(msg), msg)

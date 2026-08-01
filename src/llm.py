@@ -11,56 +11,67 @@ OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 
 def get_llm():
-    """
-    Try Gemini first.
-    If it fails, automatically use OpenRouter.
-    """
 
-    # -------- Gemini --------
-    try:
+    # ================= Gemini =================
 
-        llm = ChatGoogleGenerativeAI(
-            model="gemini-flash-latest",
-            google_api_key=GOOGLE_API_KEY,
-            temperature=0.2,
-        )
+    if GOOGLE_API_KEY:
 
-        # اختبار سريع
-        
-        print("Using Gemini")
+        try:
 
-        return llm
+            llm = ChatGoogleGenerativeAI(
+                model="gemini-2.5-flash",
+                google_api_key=GOOGLE_API_KEY,
+                temperature=0.3,
+                max_output_tokens=2048,
+            )
 
-    except Exception as e:
+            llm.invoke("Hello")
 
-        print(" Gemini Failed")
-        print(e)
+            print("=" * 50)
+            print("Using Gemini")
+            print("=" * 50)
 
-    # -------- OpenRouter --------
+            return llm
 
-    try:
+        except Exception as e:
 
-        llm = ChatOpenAI(
-            model="deepseek/deepseek-chat-v3-0324",
-            base_url="https://openrouter.ai/api/v1",
-            api_key=OPENROUTER_API_KEY,
-            temperature=0.2,
-        )
+            print("=" * 50)
+            print("Gemini Failed")
+            print(e)
+            print("=" * 50)
 
-        
+    # ================= OpenRouter =================
 
-        print("Using OpenRouter")
+    if OPENROUTER_API_KEY:
 
-        return llm
+        try:
 
-    except Exception as e:
+            llm = ChatOpenAI(
+                model="deepseek/deepseek-chat-v3-0324",
+                base_url="https://openrouter.ai/api/v1",
+                api_key=OPENROUTER_API_KEY,
+                temperature=0.3,
+                max_tokens=2048,
+            )
 
-        print(" OpenRouter Failed")
-        print(e)
+            llm.invoke("Hello")
 
-        raise RuntimeError(
-            "No available LLM. Gemini and OpenRouter both failed."
-        )
+            print("=" * 50)
+            print("Using OpenRouter")
+            print("=" * 50)
+
+            return llm
+
+        except Exception as e:
+
+            print("=" * 50)
+            print("OpenRouter Failed")
+            print(e)
+            print("=" * 50)
+
+    raise RuntimeError(
+        "No available LLM. Please check your API keys."
+    )
 
 
 llm = get_llm()
