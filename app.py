@@ -266,4 +266,6 @@ Otherwise:
         )
 
 
+# streamlit run app.py
+
         
